@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Alpine容器优化 | 文心小屋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个alpine容器通用模板作为记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Alpine容器优化">
+<meta property="og:url" content="https://qxz5637.github.io/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="文心小屋">
+<meta property="og:description" content="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个alpine容器通用模板作为记录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-06T16:39:21.000Z">
+<meta property="article:modified_time" content="2024-05-06T16:39:45.095Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">文心小屋</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">网络文摘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Alpine容器优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2024-05-06T16:39:21.000Z" itemprop="datePublished">2024-05-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Alpine容器优化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<h4 id="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件-时区不同等-所以本文旨在完成一个alpine容器通用模板作为记录"><a href="#摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件-时区不同等-所以本文旨在完成一个alpine容器通用模板作为记录" class="headerlink" title="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个alpine容器通用模板作为记录"></a>摘要：<code>alpine</code>容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个<code>alpine</code>容器通用模板作为记录</h4><span id="more"></span>
+<h3 id="导入的时候一定要指明版本-不推荐使用-latest"><a href="#导入的时候一定要指明版本-不推荐使用-latest" class="headerlink" title="导入的时候一定要指明版本, 不推荐使用 latest"></a>导入的时候一定要指明版本, 不推荐使用 <code>latest</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FROM python:3.5-alpine3.8</span><br></pre></td></tr></table></figure>
+<h3 id="修改镜像源地址为阿里云"><a href="#修改镜像源地址为阿里云" class="headerlink" title="修改镜像源地址为阿里云"></a>修改镜像源地址为阿里云</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN echo &quot;http://mirrors.aliyun.com/alpine/v3.8/main&quot; &gt; /etc/apk/repositories \</span><br></pre></td></tr></table></figure>
+<h3 id="安装时区软件-如果有自定义软件-继续在后面添加"><a href="#安装时区软件-如果有自定义软件-继续在后面添加" class="headerlink" title="安装时区软件, 如果有自定义软件, 继续在后面添加"></a>安装时区软件, 如果有自定义软件, 继续在后面添加</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;&amp; apk add --no-cache tzdata \</span><br></pre></td></tr></table></figure>
+<h3 id="设置默认时区"><a href="#设置默认时区" class="headerlink" title="设置默认时区"></a>设置默认时区</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp;&amp; cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \</span><br><span class="line">&amp;&amp; echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone \</span><br></pre></td></tr></table></figure>
+<h3 id="通过阿里云的源安装python第三方库-此处使用-flask-举例"><a href="#通过阿里云的源安装python第三方库-此处使用-flask-举例" class="headerlink" title="通过阿里云的源安装python第三方库, 此处使用 flask 举例"></a>通过阿里云的源安装python第三方库, 此处使用 <code>flask</code> 举例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&amp;&amp; pip3 install \</span><br><span class="line">--index-url http://mirrors.aliyun.com/pypi/simple \</span><br><span class="line">--trusted-host mirrors.aliyun.com \</span><br><span class="line">--no-cache-dir \</span><br><span class="line">flask==1.0.2 \</span><br></pre></td></tr></table></figure>
+<h3 id="清理运行时不需要的软件和安装缓存"><a href="#清理运行时不需要的软件和安装缓存" class="headerlink" title="清理运行时不需要的软件和安装缓存"></a>清理运行时不需要的软件和安装缓存</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&amp;&amp; apk del tzdata \</span><br><span class="line">&amp;&amp; rm -rf /var/cache/apk/* \</span><br><span class="line">&amp;&amp; rm -rf /root/.cache \</span><br><span class="line">&amp;&amp; rm -rf /tmp/*</span><br></pre></td></tr></table></figure>
+<h3 id="指明工作目录"><a href="#指明工作目录" class="headerlink" title="指明工作目录"></a>指明工作目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /</span><br><span class="line">CMD [&quot;/bin/sh&quot;]</span><br></pre></td></tr></table></figure>
+<h3 id="完整文件如下："><a href="#完整文件如下：" class="headerlink" title="完整文件如下："></a>完整文件如下：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">FROM python:3.5-alpine3.8</span><br><span class="line"> </span><br><span class="line">LABEL author example@mail.com</span><br><span class="line"> </span><br><span class="line">RUN echo &quot;http://mirrors.aliyun.com/alpine/v3.8/main&quot; &gt; /etc/apk/repositories \</span><br><span class="line">    &amp;&amp; apk add --no-cache tzdata \</span><br><span class="line">    &amp;&amp; cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \</span><br><span class="line">    &amp;&amp; echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone \</span><br><span class="line">    &amp;&amp; pip3 install \</span><br><span class="line">        --index-url http://mirrors.aliyun.com/pypi/simple \</span><br><span class="line">        --trusted-host mirrors.aliyun.com \</span><br><span class="line">        --no-cache-dir \</span><br><span class="line">        flask==1.0.2 \</span><br><span class="line">    &amp;&amp; apk del tzdata \</span><br><span class="line">    &amp;&amp; rm -rf /var/cache/apk/* \</span><br><span class="line">    &amp;&amp; rm -rf /root/.cache \</span><br><span class="line">    &amp;&amp; rm -rf /tmp/*</span><br><span class="line"> </span><br><span class="line">WORKDIR /</span><br><span class="line"> </span><br><span class="line">CMD [&quot;/bin/sh&quot;]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qxz5637.github.io/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" data-id="clvv59qqb00020hp84x404ztw" data-title="Alpine容器优化" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          修改容器后重新打包镜像并上传至镜像仓库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Git工作流规范</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/">修改容器后重新打包镜像并上传至镜像仓库</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/">Alpine容器优化</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/">Git工作流规范</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/">关于Hexo与GitHub同步的测试记录</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/03/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Hexo常用命令</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 文心小屋<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

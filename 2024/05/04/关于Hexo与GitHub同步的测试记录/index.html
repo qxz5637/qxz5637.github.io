@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>关于Hexo与GitHub同步的测试记录 | 文心小屋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Hexo与GitHub同步的测试记录">
+<meta property="og:url" content="https://qxz5637.github.io/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="文心小屋">
+<meta property="og:description" content="利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-04T04:56:23.000Z">
+<meta property="article:modified_time" content="2024-05-04T05:05:58.000Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">文心小屋</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">网络文摘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于Hexo与GitHub同步的测试记录" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time class="dt-published" datetime="2024-05-04T04:56:23.000Z" itemprop="datePublished">2024-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      关于Hexo与GitHub同步的测试记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。"><a href="#利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。" class="headerlink" title="利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。"></a>利用Hexo建立了本地网站（Docker方式建立），准备在GitHub上发布静态网站，每次新增内容后的同步就老是出错。经过多次摸索、试错后，找到了一个可行的办法，记录下来自用或者供其他网友参考。</h5><span id="more"></span>
+<h4 id="第一步：克隆远程仓库分支到本地指定目录（这里是在-app目录下的public目录，这个目录也是Hexo生成的静态网站文件存放目录）-当前工作目录是-app。"><a href="#第一步：克隆远程仓库分支到本地指定目录（这里是在-app目录下的public目录，这个目录也是Hexo生成的静态网站文件存放目录）-当前工作目录是-app。" class="headerlink" title="第一步：克隆远程仓库分支到本地指定目录（这里是在&#x2F;app目录下的public目录，这个目录也是Hexo生成的静态网站文件存放目录）,当前工作目录是/app。"></a>第一步：克隆远程仓库分支到本地指定目录（这里是在&#x2F;app目录下的public目录，这个目录也是Hexo生成的静态网站文件存放目录）,当前工作目录是<code>/app</code>。</h4><h5 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone &lt;远程仓库地址&gt; &lt;本地目录路径&gt;"></a>git clone &lt;远程仓库地址&gt; &lt;本地目录路径&gt;</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b master --single-branch git@github.com:qxz5637/hexo.git public</span><br></pre></td></tr></table></figure>
+<h4 id="将远程仓库的master分支克隆到当前目录的public目录下，若该目录不存在将自动创建。下面是命令执行结果："><a href="#将远程仓库的master分支克隆到当前目录的public目录下，若该目录不存在将自动创建。下面是命令执行结果：" class="headerlink" title="将远程仓库的master分支克隆到当前目录的public目录下，若该目录不存在将自动创建。下面是命令执行结果："></a>将远程仓库的master分支克隆到当前目录的<code>public</code>目录下，若该目录不存在将自动创建。下面是命令执行结果：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># pwd</span><br><span class="line">/app</span><br><span class="line"># git clone -b master --single-branch git@github.com:qxz5637/hexo.git public</span><br><span class="line">Cloning into &#x27;public&#x27;...</span><br><span class="line">remote: Enumerating objects: 50, done.</span><br><span class="line">remote: Counting objects: 100% (50/50), done.</span><br><span class="line">remote: Compressing objects: 100% (31/31), done.</span><br><span class="line">remote: Total 50 (delta 10), reused 50 (delta 10), pack-reused 0</span><br><span class="line">Receiving objects: 100% (50/50), 558.68 KiB | 520.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (10/10), done.</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h4 id="第二步：进入public目录，将该文件夹下的所有文件盒文件夹删除"><a href="#第二步：进入public目录，将该文件夹下的所有文件盒文件夹删除" class="headerlink" title="第二步：进入public目录，将该文件夹下的所有文件盒文件夹删除"></a>第二步：进入<code>public</code>目录，将该文件夹下的所有文件盒文件夹删除</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /app/public</span><br><span class="line">rm -rf ./*</span><br></pre></td></tr></table></figure>
+<h5 id="命令运行完成后，-git目录仍然保留。"><a href="#命令运行完成后，-git目录仍然保留。" class="headerlink" title="命令运行完成后，.git目录仍然保留。"></a>命令运行完成后，<code>.git</code>目录仍然保留。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ls /app/public/.git</span><br><span class="line">HEAD      config       hooks  info  objects      refs</span><br><span class="line">branches  description  index  logs  packed-refs</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h4 id="第三步：提交到远程仓库，将远程仓库该分支下的文件清空"><a href="#第三步：提交到远程仓库，将远程仓库该分支下的文件清空" class="headerlink" title="第三步：提交到远程仓库，将远程仓库该分支下的文件清空"></a>第三步：提交到远程仓库，将远程仓库该分支下的文件清空</h4><h5 id="1-显示所有的远程主机"><a href="#1-显示所有的远程主机" class="headerlink" title="1.显示所有的远程主机"></a>1.显示所有的远程主机</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># git remote -v</span><br><span class="line">origin  git@github.com:qxz5637/hexo.git (fetch)</span><br><span class="line">origin  git@github.com:qxz5637/hexo.git (push)</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h5 id="2-将本地改动同步到远程仓库"><a href="#2-将本地改动同步到远程仓库" class="headerlink" title="2.将本地改动同步到远程仓库"></a>2.将本地改动同步到远程仓库</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git add .</span><br></pre></td></tr></table></figure>
+<h5 id="运行git-add-命令无返回结果，下面是运行git-commit-m-clean-的结果"><a href="#运行git-add-命令无返回结果，下面是运行git-commit-m-clean-的结果" class="headerlink" title="运行git add 命令无返回结果，下面是运行git commit -m &quot;clean&quot;的结果"></a>运行<code>git add</code> 命令无返回结果，下面是运行<code>git commit -m &quot;clean&quot;</code>的结果</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># git commit -m &quot;clean&quot;</span><br><span class="line">[master 8225fb4] clean</span><br><span class="line"> 34 files changed, 37511 deletions(-)</span><br><span class="line"> delete mode 100644 &quot;2024/05/02/Typecho\345\272\225\351\203\250\346\267\273\345\212\240ICP\345\244\207\346\241\210\345\217\267/index.html&quot;</span><br><span class="line"> delete mode 100644 2024/05/02/hello-world/index.html</span><br><span class="line"> delete mode 100644 about/index.html</span><br><span class="line"> delete mode 100644 archives/2024/05/index.html</span><br><span class="line"> delete mode 100644 archives/2024/index.html</span><br><span class="line"> delete mode 100644 archives/index.html</span><br><span class="line"> delete mode 100644 categories/index.html</span><br><span class="line"> delete mode 100644 content.json</span><br><span class="line"> delete mode 100644 css/cyberpunk.css</span><br><span class="line"> delete mode 100644 css/default.css</span><br><span class="line"> delete mode 100644 css/style.css</span><br><span class="line"> delete mode 100644 images/qxz5637-1.jpg</span><br><span class="line"> delete mode 100644 images/qxz5637-2.jpg</span><br><span class="line"> delete mode 100644 images/qxz5637.jpg</span><br><span class="line"> delete mode 100644 img/avatar.png</span><br><span class="line"> delete mode 100644 img/favicon.svg</span><br><span class="line"> delete mode 100644 img/logo.svg</span><br><span class="line"> delete mode 100644 img/og_image.png</span><br><span class="line"> delete mode 100644 img/razor-bottom-black.svg</span><br><span class="line"> delete mode 100644 img/razor-top-black.svg</span><br><span class="line"> delete mode 100644 img/wx_qxz5637.jpg</span><br><span class="line"> delete mode 100644 img/zfb_qxz5637.jpg</span><br><span class="line"> delete mode 100644 index.html</span><br><span class="line"> delete mode 100644 js/algolia.js</span><br><span class="line"> delete mode 100644 js/animation.js</span><br><span class="line"> delete mode 100644 js/back_to_top.js</span><br><span class="line"> delete mode 100644 js/column.js</span><br><span class="line"> delete mode 100644 js/google_cse.js</span><br><span class="line"> delete mode 100644 js/insight.js</span><br><span class="line"> delete mode 100644 js/main.js</span><br><span class="line"> delete mode 100644 js/toc.js</span><br><span class="line"> delete mode 100644 manifest.json</span><br><span class="line"> delete mode 100644 other/index.html</span><br><span class="line"> delete mode 100644 tags/index.html</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h5 id="运行git-push-命令及返回结果"><a href="#运行git-push-命令及返回结果" class="headerlink" title="运行git push 命令及返回结果"></a>运行<code>git push</code> 命令及返回结果</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># git push</span><br><span class="line">Enumerating objects: 3, done.</span><br><span class="line">Counting objects: 100% (3/3), done.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (1/1), done.</span><br><span class="line">Writing objects: 100% (2/2), 185 bytes | 185.00 KiB/s, done.</span><br><span class="line">Total 2 (delta 0), reused 0 (delta 0), pack-reused 0</span><br><span class="line">To github.com:qxz5637/hexo.git</span><br><span class="line">   710a2d3..8225fb4  master -&gt; master</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h5 id="登陆GitHub，查看该分支的所有文件已清空。"><a href="#登陆GitHub，查看该分支的所有文件已清空。" class="headerlink" title="登陆GitHub，查看该分支的所有文件已清空。"></a>登陆GitHub，查看该分支的所有文件已清空。</h5><h4 id="至此，完成了远程仓库的清空。"><a href="#至此，完成了远程仓库的清空。" class="headerlink" title="至此，完成了远程仓库的清空。"></a>至此，完成了远程仓库的清空。</h4><h4 id="第四步：在-app目录，运行命令hexo-g，重新创建新的静态网站文件"><a href="#第四步：在-app目录，运行命令hexo-g，重新创建新的静态网站文件" class="headerlink" title="第四步：在/app目录，运行命令hexo g，重新创建新的静态网站文件"></a>第四步：在<code>/app</code>目录，运行命令<code>hexo g</code>，重新创建新的静态网站文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"># hexo g</span><br><span class="line">INFO  Validating config</span><br><span class="line">Inferno is in development mode.</span><br><span class="line">INFO  =======================================</span><br><span class="line"> ██╗ ██████╗ █████╗ ██████╗ ██╗   ██╗███████╗</span><br><span class="line"> ██║██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝</span><br><span class="line"> ██║██║     ███████║██████╔╝██║   ██║███████╗</span><br><span class="line"> ██║██║     ██╔══██║██╔══██╗██║   ██║╚════██║</span><br><span class="line"> ██║╚██████╗██║  ██║██║  ██║╚██████╔╝███████║</span><br><span class="line"> ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝</span><br><span class="line">=============================================</span><br><span class="line">INFO  === Checking package dependencies ===</span><br><span class="line">INFO  === Checking theme configurations ===</span><br><span class="line">INFO  === Registering Hexo extensions ===</span><br><span class="line">INFO  Start processing</span><br><span class="line">Inferno is in development mode.</span><br><span class="line">INFO  Files loaded in 817 ms</span><br><span class="line">INFO  Generated: js/algolia.js</span><br><span class="line">INFO  Generated: js/google_cse.js</span><br><span class="line">INFO  Generated: js/toc.js</span><br><span class="line">INFO  Generated: js/insight.js</span><br><span class="line">INFO  Generated: content.json</span><br><span class="line">INFO  Generated: manifest.json</span><br><span class="line">INFO  Generated: categories/index.html</span><br><span class="line">INFO  Generated: tags/index.html</span><br><span class="line">INFO  Generated: about/index.html</span><br><span class="line">INFO  Generated: other/index.html</span><br><span class="line">INFO  Generated: archives/index.html</span><br><span class="line">INFO  Generated: archives/2024/index.html</span><br><span class="line">INFO  Generated: archives/2024/05/index.html</span><br><span class="line">INFO  Generated: img/avatar.png</span><br><span class="line">INFO  Generated: index.html</span><br><span class="line">INFO  Generated: img/favicon.svg</span><br><span class="line">INFO  Generated: img/logo.svg</span><br><span class="line">INFO  Generated: img/razor-bottom-black.svg</span><br><span class="line">INFO  Generated: img/og_image.png</span><br><span class="line">INFO  Generated: img/razor-top-black.svg</span><br><span class="line">INFO  Generated: images/qxz5637.jpg</span><br><span class="line">INFO  Generated: img/wx_qxz5637.jpg</span><br><span class="line">INFO  Generated: css/cyberpunk.css</span><br><span class="line">INFO  Generated: js/back_to_top.js</span><br><span class="line">INFO  Generated: js/animation.js</span><br><span class="line">INFO  Generated: js/column.js</span><br><span class="line">INFO  Generated: js/main.js</span><br><span class="line">INFO  Generated: css/default.css</span><br><span class="line">INFO  Generated: css/style.css</span><br><span class="line">INFO  Generated: img/zfb_qxz5637.jpg</span><br><span class="line">INFO  Generated: images/qxz5637-2.jpg</span><br><span class="line">INFO  Generated: images/qxz5637-1.jpg</span><br><span class="line">INFO  Generated: 2024/05/03/Hexo常用命令/index.html</span><br><span class="line">INFO  Generated: 2024/05/03/Hueman主题下配置Gitalk/index.html</span><br><span class="line">INFO  Generated: 2024/05/02/Typecho底部添加ICP备案号/index.html</span><br><span class="line">INFO  Generated: 2024/05/02/hello-world/index.html</span><br><span class="line">INFO  36 files generated in 2.82 s</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+<h4 id="第五步：将新建的静态网站文件同步到远程仓库，与第一步相似"><a href="#第五步：将新建的静态网站文件同步到远程仓库，与第一步相似" class="headerlink" title="第五步：将新建的静态网站文件同步到远程仓库，与第一步相似"></a>第五步：将新建的静态网站文件同步到远程仓库，与第一步相似</h4><h5 id="1-所有文件加入本地库"><a href="#1-所有文件加入本地库" class="headerlink" title="1.所有文件加入本地库"></a>1.所有文件加入本地库</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git add .</span><br></pre></td></tr></table></figure>
+<h5 id="2-提交到缓存"><a href="#2-提交到缓存" class="headerlink" title="2.提交到缓存"></a>2.提交到缓存</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># git commit -m &quot;auto&quot;</span><br><span class="line">[master 63620ae] auto</span><br><span class="line"> 36 files changed, 37720 insertions(+)</span><br><span class="line"> create mode 100644 &quot;2024/05/02/Typecho\345\272\225\351\203\250\346\267\273\345\212\240ICP\345\244\207\346\241\210\345\217\267/index.html&quot;</span><br><span class="line"> create mode 100644 2024/05/02/hello-world/index.html</span><br><span class="line"> create mode 100644 &quot;2024/05/03/Hexo\345\270\270\347\224\250\345\221\275\344\273\244/index.html&quot;</span><br><span class="line"> create mode 100644 &quot;2024/05/03/Hueman\344\270\273\351\242\230\344\270\213\351\205\215\347\275\256Gitalk/index.html&quot;</span><br><span class="line"> create mode 100644 about/index.html</span><br><span class="line"> create mode 100644 archives/2024/05/index.html</span><br><span class="line"> create mode 100644 archives/2024/index.html</span><br><span class="line"> create mode 100644 archives/index.html</span><br><span class="line"> create mode 100644 categories/index.html</span><br><span class="line"> create mode 100644 content.json</span><br><span class="line"> create mode 100644 css/cyberpunk.css</span><br><span class="line"> create mode 100644 css/default.css</span><br><span class="line"> create mode 100644 css/style.css</span><br><span class="line"> create mode 100644 images/qxz5637-1.jpg</span><br><span class="line"> create mode 100644 images/qxz5637-2.jpg</span><br><span class="line"> create mode 100644 images/qxz5637.jpg</span><br><span class="line"> create mode 100644 img/avatar.png</span><br><span class="line"> create mode 100644 img/favicon.svg</span><br><span class="line"> create mode 100644 img/logo.svg</span><br><span class="line"> create mode 100644 img/og_image.png</span><br><span class="line"> create mode 100644 img/razor-bottom-black.svg</span><br><span class="line"> create mode 100644 img/razor-top-black.svg</span><br><span class="line"> create mode 100644 img/wx_qxz5637.jpg</span><br><span class="line"> create mode 100644 img/zfb_qxz5637.jpg</span><br><span class="line"> create mode 100644 index.html</span><br><span class="line"> create mode 100644 js/algolia.js</span><br><span class="line"> create mode 100644 js/animation.js</span><br><span class="line"> create mode 100644 js/back_to_top.js</span><br><span class="line"> create mode 100644 js/column.js</span><br><span class="line"> create mode 100644 js/google_cse.js</span><br><span class="line"> create mode 100644 js/insight.js</span><br><span class="line"> create mode 100644 js/main.js</span><br><span class="line"> create mode 100644 js/toc.js</span><br><span class="line"> create mode 100644 manifest.json</span><br><span class="line"> create mode 100644 other/index.html</span><br><span class="line"> create mode 100644 tags/index.html</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h5 id="3-同步到远程仓库"><a href="#3-同步到远程仓库" class="headerlink" title="3.同步到远程仓库"></a>3.同步到远程仓库</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># git push</span><br><span class="line">Enumerating objects: 56, done.</span><br><span class="line">Counting objects: 100% (56/56), done.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (44/44), done.</span><br><span class="line">Writing objects: 100% (55/55), 570.30 KiB | 1.45 MiB/s, done.</span><br><span class="line">Total 55 (delta 11), reused 25 (delta 1), pack-reused 0</span><br><span class="line">remote: Resolving deltas: 100% (11/11), done.</span><br><span class="line">To github.com:qxz5637/hexo.git</span><br><span class="line">   8225fb4..63620ae  master -&gt; master</span><br><span class="line"># </span><br></pre></td></tr></table></figure>
+<h5 id="登陆GitHub网站，查看该分支下面的文件。"><a href="#登陆GitHub网站，查看该分支下面的文件。" class="headerlink" title="登陆GitHub网站，查看该分支下面的文件。"></a>登陆GitHub网站，查看该分支下面的文件。</h5><h5 id="全部完成，感觉好累啊！"><a href="#全部完成，感觉好累啊！" class="headerlink" title="全部完成，感觉好累啊！"></a>全部完成，感觉好累啊！</h5>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qxz5637.github.io/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/" data-id="clvrxbrds00050hp80ip41g4c" data-title="关于Hexo与GitHub同步的测试记录" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/05/03/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo常用命令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/">关于Hexo与GitHub同步的测试记录</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/03/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Hexo常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/03/Hueman%E4%B8%BB%E9%A2%98%E4%B8%8B%E9%85%8D%E7%BD%AEGitalk/">Hueman主题下配置Gitalk</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/02/Typecho%E5%BA%95%E9%83%A8%E6%B7%BB%E5%8A%A0ICP%E5%A4%87%E6%A1%88%E5%8F%B7/">Typecho底部添加ICP备案号</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/02/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 文心小屋<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

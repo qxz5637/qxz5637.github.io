@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Git工作流规范 | 文心小屋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Git 工作流简介Git 作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git 工作流有很多种，包括 Git Flow、GitHub Flow、GitLab Flow 等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git工作流规范">
+<meta property="og:url" content="https://qxz5637.github.io/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="文心小屋">
+<meta property="og:description" content="Git 工作流简介Git 作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git 工作流有很多种，包括 Git Flow、GitHub Flow、GitLab Flow 等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://image.qxz5637.top:8197/git-flow.png">
+<meta property="og:image" content="http://image.qxz5637.top:8197/github-flow.png">
+<meta property="og:image" content="http://image.qxz5637.top:8197/gitlab-flow.png">
+<meta property="og:image" content="http://image.qxz5637.top:8197/branch-sync.png">
+<meta property="article:published_time" content="2024-05-04T17:25:49.000Z">
+<meta property="article:modified_time" content="2024-05-04T17:49:48.928Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://image.qxz5637.top:8197/git-flow.png">
+  
+    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">文心小屋</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">网络文摘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Git工作流规范" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/" class="article-date">
+  <time class="dt-published" datetime="2024-05-04T17:25:49.000Z" itemprop="datePublished">2024-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Git工作流规范
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="Git-工作流简介"><a href="#Git-工作流简介" class="headerlink" title="Git 工作流简介"></a>Git 工作流简介</h3><h4 id="Git-作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git-工作流有很多种，包括-Git-Flow、GitHub-Flow、GitLab-Flow-等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。"><a href="#Git-作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git-工作流有很多种，包括-Git-Flow、GitHub-Flow、GitLab-Flow-等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。" class="headerlink" title="Git 作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git 工作流有很多种，包括 Git Flow、GitHub Flow、GitLab Flow 等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。"></a>Git 作为一个强大的代码管理工具，提供了丰富的分支策略和工作流方式，一直以来都是各大互联网企业的首选。在业界，Git 工作流有很多种，包括 Git Flow、GitHub Flow、GitLab Flow 等。在某些情况下现有工作流无法满足公司或团队的研发需求，这时就需要结合团队研发现状，充分考虑现有工作流程中的上下游系统，制定出与团队更加匹的工作流。</h4><span id="more"></span>
+<h3 id="常见-Git-工作流"><a href="#常见-Git-工作流" class="headerlink" title="常见 Git 工作流"></a>常见 Git 工作流</h3><p><img src="http://image.qxz5637.top:8197/git-flow.png" alt="这是图片"></p>
+<h5 id="Git-Flow-开发模型从源代码管理角度对通常意义上的软件开发活动进行了约束。应该说，为我们的软件开发提供了一个可供参考的管理模型。Git-Flow-开发模型让-nvie-的开发代码仓库保持整洁，让小组各个成员之间的开发相互隔离，能够有效避免处于开发状态中的代码相互影响而导致的效率低下和混乱。"><a href="#Git-Flow-开发模型从源代码管理角度对通常意义上的软件开发活动进行了约束。应该说，为我们的软件开发提供了一个可供参考的管理模型。Git-Flow-开发模型让-nvie-的开发代码仓库保持整洁，让小组各个成员之间的开发相互隔离，能够有效避免处于开发状态中的代码相互影响而导致的效率低下和混乱。" class="headerlink" title="Git Flow 开发模型从源代码管理角度对通常意义上的软件开发活动进行了约束。应该说，为我们的软件开发提供了一个可供参考的管理模型。Git Flow 开发模型让 nvie 的开发代码仓库保持整洁，让小组各个成员之间的开发相互隔离，能够有效避免处于开发状态中的代码相互影响而导致的效率低下和混乱。"></a>Git Flow 开发模型从源代码管理角度对通常意义上的软件开发活动进行了约束。应该说，为我们的软件开发提供了一个可供参考的管理模型。Git Flow 开发模型让 nvie 的开发代码仓库保持整洁，让小组各个成员之间的开发相互隔离，能够有效避免处于开发状态中的代码相互影响而导致的效率低下和混乱。</h5><p><img src="http://image.qxz5637.top:8197/github-flow.png" alt="这是图片"></p>
+<h4 id="GitHub-Flow-是一个相对简单的分支模型，它没有-Git-Flow-或是-Gitlab-Flow-那么多的定义和概念。GitHub-Flow-最大的亮点在于部署（Deploy）发生在-合并（Merge）之前，这就是-GitHub-Flow-的核心，非阻塞式集成-——-在产生任何副作用之前得知当前修改的所有集成效果，达到真正的持续集成。"><a href="#GitHub-Flow-是一个相对简单的分支模型，它没有-Git-Flow-或是-Gitlab-Flow-那么多的定义和概念。GitHub-Flow-最大的亮点在于部署（Deploy）发生在-合并（Merge）之前，这就是-GitHub-Flow-的核心，非阻塞式集成-——-在产生任何副作用之前得知当前修改的所有集成效果，达到真正的持续集成。" class="headerlink" title="GitHub Flow 是一个相对简单的分支模型，它没有 Git Flow 或是 Gitlab Flow 那么多的定义和概念。GitHub Flow 最大的亮点在于部署（Deploy）发生在 合并（Merge）之前，这就是 GitHub Flow 的核心，非阻塞式集成 —— 在产生任何副作用之前得知当前修改的所有集成效果，达到真正的持续集成。"></a>GitHub Flow 是一个相对简单的分支模型，它没有 Git Flow 或是 Gitlab Flow 那么多的定义和概念。GitHub Flow 最大的亮点在于部署（Deploy）发生在 合并（Merge）之前，这就是 GitHub Flow 的核心，非阻塞式集成 —— 在产生任何副作用之前得知当前修改的所有集成效果，达到真正的持续集成。</h4><p><img src="http://image.qxz5637.top:8197/gitlab-flow.png" alt="这是图片"></p>
+<h5 id="GitLab-Flow-并不像-Git-Flow-GitHub-Flow-一样具有明显的规范，它更多是在-GitHub-Flow-基础上，综合考虑环境部署、项目管理等问题而得出的一种实践。"><a href="#GitLab-Flow-并不像-Git-Flow-GitHub-Flow-一样具有明显的规范，它更多是在-GitHub-Flow-基础上，综合考虑环境部署、项目管理等问题而得出的一种实践。" class="headerlink" title="GitLab Flow 并不像 Git Flow, GitHub Flow 一样具有明显的规范，它更多是在 GitHub Flow 基础上，综合考虑环境部署、项目管理等问题而得出的一种实践。"></a>GitLab Flow 并不像 Git Flow, GitHub Flow 一样具有明显的规范，它更多是在 GitHub Flow 基础上，综合考虑环境部署、项目管理等问题而得出的一种实践。</h5><h3 id="Abyssers’-blog-工作流实践（规范建议）"><a href="#Abyssers’-blog-工作流实践（规范建议）" class="headerlink" title="Abyssers’ blog 工作流实践（规范建议）"></a>Abyssers’ blog 工作流实践（规范建议）</h3><h5 id="本节认为您已经参考-初入指南-将组织仓库-fork-至个人-GitHub-账户，并-clone-至本地。"><a href="#本节认为您已经参考-初入指南-将组织仓库-fork-至个人-GitHub-账户，并-clone-至本地。" class="headerlink" title="本节认为您已经参考 初入指南 将组织仓库 fork 至个人 GitHub 账户，并 clone 至本地。"></a>本节认为您已经参考 初入指南 将组织仓库 fork 至个人 GitHub 账户，并 clone 至本地。</h5><h4 id="新建分支"><a href="#新建分支" class="headerlink" title="新建分支"></a>新建分支</h4><h5 id="当准备开始一项新工作时，不要直接在-main-分支上直接开始。先-pull-一下保证代码最新，这里注意如果拉取的是-fork-仓库代码，那么在-pull-之前需要将-fork-仓库与组织仓库进行同步："><a href="#当准备开始一项新工作时，不要直接在-main-分支上直接开始。先-pull-一下保证代码最新，这里注意如果拉取的是-fork-仓库代码，那么在-pull-之前需要将-fork-仓库与组织仓库进行同步：" class="headerlink" title="当准备开始一项新工作时，不要直接在 main 分支上直接开始。先 pull 一下保证代码最新，这里注意如果拉取的是 fork 仓库代码，那么在 pull 之前需要将 fork 仓库与组织仓库进行同步："></a>当准备开始一项新工作时，不要直接在 main 分支上直接开始。先 pull 一下保证代码最新，这里注意如果拉取的是 fork 仓库代码，那么在 pull 之前需要将 fork 仓库与组织仓库进行同步：</h5><p><img src="http://image.qxz5637.top:8197/branch-sync.png" alt="这是图片"></p>
+<h5 id="之后新建并切换至一个新分支："><a href="#之后新建并切换至一个新分支：" class="headerlink" title="之后新建并切换至一个新分支："></a>之后新建并切换至一个新分支：</h5><p><code>git checkout -b</code> &lt;开发分支名称&gt;</p>
+<h5 id="暂存代码"><a href="#暂存代码" class="headerlink" title="暂存代码"></a>暂存代码</h5><h5 id="当功能正在开发的过程中需要切换分支，直接-checkout-会将未提交的改动一同带到切换的新分支上，此时可以使用-stash-将未提交的内容保存至堆栈中。"><a href="#当功能正在开发的过程中需要切换分支，直接-checkout-会将未提交的改动一同带到切换的新分支上，此时可以使用-stash-将未提交的内容保存至堆栈中。" class="headerlink" title="当功能正在开发的过程中需要切换分支，直接 checkout 会将未提交的改动一同带到切换的新分支上，此时可以使用 stash 将未提交的内容保存至堆栈中。"></a>当功能正在开发的过程中需要切换分支，直接 checkout 会将未提交的改动一同带到切换的新分支上，此时可以使用 stash 将未提交的内容保存至堆栈中。</h5><h5 id="提交并推送至-fork-仓库"><a href="#提交并推送至-fork-仓库" class="headerlink" title="提交并推送至 fork 仓库"></a>提交并推送至 fork 仓库</h5><h5 id="当开发工作完成，需要将更新推送并合并时，不要直接推送至组织仓库，应该推送至自己的-fork-仓库，再通过-PR-提交至组织仓库。在推送至自己的-fork-仓库时首先需要检查-main-分支是否有更新，如果此时有更新需要首先对-fork-仓库进行同步，并将本地代码进行暂存："><a href="#当开发工作完成，需要将更新推送并合并时，不要直接推送至组织仓库，应该推送至自己的-fork-仓库，再通过-PR-提交至组织仓库。在推送至自己的-fork-仓库时首先需要检查-main-分支是否有更新，如果此时有更新需要首先对-fork-仓库进行同步，并将本地代码进行暂存：" class="headerlink" title="当开发工作完成，需要将更新推送并合并时，不要直接推送至组织仓库，应该推送至自己的 fork 仓库，再通过 PR 提交至组织仓库。在推送至自己的 fork 仓库时首先需要检查 main 分支是否有更新，如果此时有更新需要首先对 fork 仓库进行同步，并将本地代码进行暂存："></a>当开发工作完成，需要将更新推送并合并时，不要直接推送至组织仓库，应该推送至自己的 fork 仓库，再通过 PR 提交至组织仓库。在推送至自己的 fork 仓库时首先需要检查 main 分支是否有更新，如果此时有更新需要首先对 fork 仓库进行同步，并将本地代码进行暂存：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git stash</span><br></pre></td></tr></table></figure>
+<h5 id="暂存后切换至-main-分支并使用-pull-更新最新代码，再回到开发分支，如果-main-分支有更新需要合并-main-分支最新代码，并取出暂存代码："><a href="#暂存后切换至-main-分支并使用-pull-更新最新代码，再回到开发分支，如果-main-分支有更新需要合并-main-分支最新代码，并取出暂存代码：" class="headerlink" title="暂存后切换至 main 分支并使用 pull 更新最新代码，再回到开发分支，如果 main 分支有更新需要合并 main 分支最新代码，并取出暂存代码："></a>暂存后切换至 main 分支并使用 pull 更新最新代码，再回到开发分支，如果 main 分支有更新需要合并 main 分支最新代码，并取出暂存代码：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git pull</span><br><span class="line">git checkout &lt;开发分支名称&gt;</span><br><span class="line">git merge main</span><br><span class="line">git stash pop</span><br></pre></td></tr></table></figure>
+<h5 id="如果遇到冲突，需要将冲突解决后提交并推送至-fork-仓库："><a href="#如果遇到冲突，需要将冲突解决后提交并推送至-fork-仓库：" class="headerlink" title="如果遇到冲突，需要将冲突解决后提交并推送至 fork 仓库："></a>如果遇到冲突，需要将冲突解决后提交并推送至 fork 仓库：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &lt;message&gt;</span><br><span class="line">git push --set-upstream origin &lt;开发分支名称&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="通过-PR-提交至组织仓库"><a href="#通过-PR-提交至组织仓库" class="headerlink" title="通过 PR 提交至组织仓库"></a>通过 PR 提交至组织仓库</h5><h5 id="我们到自己的-fork-仓库里，向组织仓库提交分支合并请求，一般是自己这次工作创建的分支合并至组织仓库的-main-分支："><a href="#我们到自己的-fork-仓库里，向组织仓库提交分支合并请求，一般是自己这次工作创建的分支合并至组织仓库的-main-分支：" class="headerlink" title="我们到自己的 fork 仓库里，向组织仓库提交分支合并请求，一般是自己这次工作创建的分支合并至组织仓库的 main 分支："></a>我们到自己的 fork 仓库里，向组织仓库提交分支合并请求，一般是自己这次工作创建的分支合并至组织仓库的 main 分支：</h5><h5 id="在提交-PR-后，组织仓库管理员会进行-Code-Review-，如果提交的代码存在问题，在问题修复后管理员会将代码合并至组织仓库。"><a href="#在提交-PR-后，组织仓库管理员会进行-Code-Review-，如果提交的代码存在问题，在问题修复后管理员会将代码合并至组织仓库。" class="headerlink" title="在提交 PR 后，组织仓库管理员会进行 Code Review ，如果提交的代码存在问题，在问题修复后管理员会将代码合并至组织仓库。"></a>在提交 PR 后，组织仓库管理员会进行 Code Review ，如果提交的代码存在问题，在问题修复后管理员会将代码合并至组织仓库。</h5><h4 id="合并之后"><a href="#合并之后" class="headerlink" title="合并之后"></a>合并之后</h4><h5 id="在你的-PR-通过后，你这次的任务就算是完成了，最后要注意的一点就是别忘了同步-main-分支代码，首先在-fork-仓库对分支进行同步，之后在本地将分支切换至-main-分支再使用-pull-同步最新代码。"><a href="#在你的-PR-通过后，你这次的任务就算是完成了，最后要注意的一点就是别忘了同步-main-分支代码，首先在-fork-仓库对分支进行同步，之后在本地将分支切换至-main-分支再使用-pull-同步最新代码。" class="headerlink" title="在你的 PR 通过后，你这次的任务就算是完成了，最后要注意的一点就是别忘了同步 main 分支代码，首先在 fork 仓库对分支进行同步，之后在本地将分支切换至 main 分支再使用 pull 同步最新代码。"></a>在你的 PR 通过后，你这次的任务就算是完成了，最后要注意的一点就是别忘了同步 main 分支代码，首先在 fork 仓库对分支进行同步，之后在本地将分支切换至 main 分支再使用 pull 同步最新代码。</h5>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qxz5637.github.io/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/" data-id="clvv59qq200000hp8e0g7hn3f" data-title="Git工作流规范" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Alpine容器优化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关于Hexo与GitHub同步的测试记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/">修改容器后重新打包镜像并上传至镜像仓库</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/">Alpine容器优化</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/">Git工作流规范</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/04/%E5%85%B3%E4%BA%8EHexo%E4%B8%8EGitHub%E5%90%8C%E6%AD%A5%E7%9A%84%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/">关于Hexo与GitHub同步的测试记录</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/03/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Hexo常用命令</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 文心小屋<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
