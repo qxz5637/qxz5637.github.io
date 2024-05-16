@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo-Blog Docker搭建本地环境与持续集成 | 文心小屋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Hexo-Blog (indigo-hexo6)该博客使用了 GitHub Pages + Hexo + indigo-hexo6 主题搭建GitHub Pages 允许我们 创建以自己用户名开头的username.github.io仓库用来搭建自己的静态页面网站或者博客，而 Hexo 本身就是一款支持 Markdown 静态化博客框架，有多种主题可供选择，并且上手简单。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo-Blog Docker搭建本地环境与持续集成">
+<meta property="og:url" content="https://qxz5637.github.io/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="文心小屋">
+<meta property="og:description" content="Hexo-Blog (indigo-hexo6)该博客使用了 GitHub Pages + Hexo + indigo-hexo6 主题搭建GitHub Pages 允许我们 创建以自己用户名开头的username.github.io仓库用来搭建自己的静态页面网站或者博客，而 Hexo 本身就是一款支持 Markdown 静态化博客框架，有多种主题可供选择，并且上手简单。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-10T12:12:22.000Z">
+<meta property="article:modified_time" content="2024-05-10T12:16:21.801Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">文心小屋</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">网络文摘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Hexo-Blog-Docker搭建本地环境与持续集成" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" class="article-date">
+  <time class="dt-published" datetime="2024-05-10T12:12:22.000Z" itemprop="datePublished">2024-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Hexo-Blog Docker搭建本地环境与持续集成
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Hexo-Blog-indigo-hexo6"><a href="#Hexo-Blog-indigo-hexo6" class="headerlink" title="Hexo-Blog (indigo-hexo6)"></a>Hexo-Blog (indigo-hexo6)</h5><h5 id="该博客使用了-GitHub-Pages-Hexo-indigo-hexo6-主题搭建"><a href="#该博客使用了-GitHub-Pages-Hexo-indigo-hexo6-主题搭建" class="headerlink" title="该博客使用了 GitHub Pages + Hexo + indigo-hexo6 主题搭建"></a>该博客使用了 <code>GitHub Pages + Hexo + indigo-hexo6</code> 主题搭建</h5><h5 id="GitHub-Pages-允许我们-创建以自己用户名开头的username-github-io仓库用来搭建自己的静态页面网站或者博客，而-Hexo-本身就是一款支持-Markdown-静态化博客框架，有多种主题可供选择，并且上手简单。"><a href="#GitHub-Pages-允许我们-创建以自己用户名开头的username-github-io仓库用来搭建自己的静态页面网站或者博客，而-Hexo-本身就是一款支持-Markdown-静态化博客框架，有多种主题可供选择，并且上手简单。" class="headerlink" title="GitHub Pages 允许我们 创建以自己用户名开头的username.github.io仓库用来搭建自己的静态页面网站或者博客，而 Hexo 本身就是一款支持 Markdown 静态化博客框架，有多种主题可供选择，并且上手简单。"></a><code>GitHub Pages</code> 允许我们 创建以自己用户名开头的<code>username.github.io</code>仓库用来搭建自己的静态页面网站或者博客，而 <code>Hexo</code> 本身就是一款支持 <code>Markdown</code> 静态化博客框架，有多种主题可供选择，并且上手简单。</h5><span id="more"></span>
+<h5 id="另外为了解决平时在写好文章想先本地预览，但是又不在自己电脑旁边或者使用公司电脑的时候要重新安装部署一遍-nodejs-和-hexo-这些东西，所以增加了docker来解决环境的问题。"><a href="#另外为了解决平时在写好文章想先本地预览，但是又不在自己电脑旁边或者使用公司电脑的时候要重新安装部署一遍-nodejs-和-hexo-这些东西，所以增加了docker来解决环境的问题。" class="headerlink" title="另外为了解决平时在写好文章想先本地预览，但是又不在自己电脑旁边或者使用公司电脑的时候要重新安装部署一遍 nodejs 和 hexo 这些东西，所以增加了docker来解决环境的问题。"></a>另外为了解决平时在写好文章想先本地预览，但是又不在自己电脑旁边或者使用公司电脑的时候要重新安装部署一遍 <code>nodejs</code> 和 <code>hexo</code> 这些东西，所以增加了<code>docker</code>来解决环境的问题。</h5><h5 id="使用-Dockerfile-docker-compose-文件，Dockerfile"><a href="#使用-Dockerfile-docker-compose-文件，Dockerfile" class="headerlink" title="使用 Dockerfile + docker-compose 文件，Dockerfile"></a>使用 <code>Dockerfile + docker-compose</code> 文件，<code>Dockerfile</code></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM node:14 AS builder</span><br><span class="line">WORKDIR /app</span><br><span class="line">COPY . .</span><br><span class="line">RUN npm install --no-fund &amp;&amp; npx hexo clean &amp;&amp; npx hexo generate</span><br><span class="line">FROM nginx:alpine</span><br><span class="line">WORKDIR /usr/share/nginx/html</span><br><span class="line">COPY --from=builder /app/public /usr/share/nginx/html</span><br><span class="line">EXPOSE 8080</span><br></pre></td></tr></table></figure>
+<h5 id="提醒：在中国大陆由于某些众所周知的网络原因-npm-install-命令有时候会失败-可以多试几次-也可以使用国内镜像或者科学上网安装。"><a href="#提醒：在中国大陆由于某些众所周知的网络原因-npm-install-命令有时候会失败-可以多试几次-也可以使用国内镜像或者科学上网安装。" class="headerlink" title="提醒：在中国大陆由于某些众所周知的网络原因, npm install 命令有时候会失败, 可以多试几次, 也可以使用国内镜像或者科学上网安装。"></a>提醒：在中国大陆由于某些众所周知的网络原因, <code>npm install</code> 命令有时候会失败, 可以多试几次, 也可以使用国内镜像或者科学上网安装。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker-compose</span><br><span class="line">version: &#x27;3&#x27;</span><br><span class="line">services:</span><br><span class="line">  hexo:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    image: chuchuzz426/blog-hexo:1.0</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;8080:80&quot;</span><br></pre></td></tr></table></figure>
+<h5 id="如此-git-clone-下来的时候-能立马部署出一套本地环境，使用简单-开袋即食😋"><a href="#如此-git-clone-下来的时候-能立马部署出一套本地环境，使用简单-开袋即食😋" class="headerlink" title="如此 git clone 下来的时候 能立马部署出一套本地环境，使用简单, 开袋即食😋"></a>如此 <code>git clone</code> 下来的时候 能立马部署出一套本地环境，使用简单, 开袋即食😋</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 拉取src分支源码</span><br><span class="line">git clone -b src git@github.com:chuchu-z/chuchu-z.github.io.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在项目目录执行</span><br><span class="line">docker-compose build --no-cache &amp;&amp; docker-compose up</span><br></pre></td></tr></table></figure>
+<h5 id="然后就可以打开-http-127-0-0-1-8080-预览啦✨"><a href="#然后就可以打开-http-127-0-0-1-8080-预览啦✨" class="headerlink" title="然后就可以打开 http://127.0.0.1:8080/ 预览啦✨"></a>然后就可以打开 <code>http://127.0.0.1:8080/</code> 预览啦✨</h5><h5 id="持续集成自动部署"><a href="#持续集成自动部署" class="headerlink" title="持续集成自动部署"></a>持续集成自动部署</h5><h5 id="为了发布文章push-到-src-分支后能自动更新到博客-使用了-GitHub-Actions-来实现自动部署"><a href="#为了发布文章push-到-src-分支后能自动更新到博客-使用了-GitHub-Actions-来实现自动部署" class="headerlink" title="为了发布文章push 到 src 分支后能自动更新到博客, 使用了 GitHub Actions 来实现自动部署"></a>为了发布文章<code>push</code> 到 <code>src</code> 分支后能自动更新到博客, 使用了 <code>GitHub Actions</code> 来实现自动部署</h5><h5 id="通过使用-GitHub-Actions，我们可以实现自动化的软件开发流程，提高开发效率和代码质量，它还可以帮助团队协同工作，确保代码的集成和部署过程更加可靠和一致"><a href="#通过使用-GitHub-Actions，我们可以实现自动化的软件开发流程，提高开发效率和代码质量，它还可以帮助团队协同工作，确保代码的集成和部署过程更加可靠和一致" class="headerlink" title="通过使用 GitHub Actions，我们可以实现自动化的软件开发流程，提高开发效率和代码质量，它还可以帮助团队协同工作，确保代码的集成和部署过程更加可靠和一致"></a>通过使用 <code>GitHub Actions</code>，我们可以实现自动化的软件开发流程，提高开发效率和代码质量，它还可以帮助团队协同工作，确保代码的集成和部署过程更加可靠和一致</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"># Action 的名字</span><br><span class="line">name: Hexo Auto Deploy</span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  # 触发条件1：src 分支收到 push 后执行任务。</span><br><span class="line">  push:</span><br><span class="line">    branches:</span><br><span class="line">      - src</span><br><span class="line">  # 触发条件2：手动按钮</span><br><span class="line">  workflow_dispatch:</span><br><span class="line"></span><br><span class="line"># 这里放环境变量,需要替换成你自己的</span><br><span class="line">env:</span><br><span class="line">  # Hexo 编译后使用此 git 用户部署到 github 仓库</span><br><span class="line">  GIT_USER: chuchu-z</span><br><span class="line">  # Hexo 编译后使用此 git 邮箱部署到 github 仓库</span><br><span class="line">  GIT_EMAIL: chuchuzz426@gmail.com</span><br><span class="line">  # Hexo 编译后要部署的 github 仓库</span><br><span class="line">  GIT_DEPLOY_REPO: chuchu-z/chuchu-z.github.io</span><br><span class="line">  # Hexo 编译后要部署到的分支</span><br><span class="line">  GIT_DEPLOY_BRANCH: master</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  build:</span><br><span class="line">    name: Build on node $&#123;&#123; matrix.node_version &#125;&#125; and $&#123;&#123; matrix.os &#125;&#125;</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    if: github.event.repository.owner.id == github.event.sender.id</span><br><span class="line">    strategy:</span><br><span class="line">      matrix:</span><br><span class="line">        os: [ubuntu-latest]</span><br><span class="line">        node_version: [14]</span><br><span class="line"></span><br><span class="line">    steps:</span><br><span class="line">      - name: Checkout</span><br><span class="line">        uses: actions/checkout@v2</span><br><span class="line"></span><br><span class="line">      - name: Checkout deploy repo</span><br><span class="line">        uses: actions/checkout@v2</span><br><span class="line">        with:</span><br><span class="line">          repository: $&#123;&#123; env.GIT_DEPLOY_REPO &#125;&#125;</span><br><span class="line">          ref: $&#123;&#123; env.GIT_DEPLOY_BRANCH &#125;&#125;</span><br><span class="line">          path: .deploy_git</span><br><span class="line"></span><br><span class="line">      - name: Use Node.js $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line">        uses: actions/setup-node@v1</span><br><span class="line">        with:</span><br><span class="line">          node-version: $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line"></span><br><span class="line">      - name: Configuration environment</span><br><span class="line">        env:</span><br><span class="line">          HEXO_DEPLOY_PRI: $&#123;&#123;secrets.HEXO_DEPLOY_PRI&#125;&#125;</span><br><span class="line">        run: |</span><br><span class="line">          sudo timedatectl set-timezone &quot;Asia/Shanghai&quot;</span><br><span class="line">          mkdir -p ~/.ssh/</span><br><span class="line">          echo &quot;$HEXO_DEPLOY_PRI&quot; &gt; ~/.ssh/id_rsa</span><br><span class="line">          chmod 600 ~/.ssh/id_rsa</span><br><span class="line">          ssh-keyscan -t rsa github.com &gt;&gt; ~/.ssh/known_hosts</span><br><span class="line">          # coding 已取消同步</span><br><span class="line">          ssh-keyscan -t rsa e.coding.net &gt;&gt; ~/.ssh/known_hosts</span><br><span class="line">          ssh-keyscan -t rsa gitee.com &gt;&gt; ~/.ssh/known_hosts</span><br><span class="line">          git config --global user.name $GIT_USER</span><br><span class="line">          git config --global user.email $GIT_EMAIL</span><br><span class="line"></span><br><span class="line">      - name: Install dependencies</span><br><span class="line">        run: npm install --no-fund</span><br><span class="line"></span><br><span class="line">      - name: Deploy hexo</span><br><span class="line">        run: |</span><br><span class="line">          npm run deploy</span><br></pre></td></tr></table></figure>
+<h5 id="触发条件为每当有push-代码的时候将自动按照-github-workflows-deploy-yml下的配置文件构造部署环境，相当于帮我们执行了-hexo-generate-和-hexo-deploy-然后hexo-deploy会根据项目根目录下的-config-yml配置文件。把编译好的静态文件更新到以自己用户名开头的username-github-io仓库的-master-分支上，这样就完成了自动化部署啦。"><a href="#触发条件为每当有push-代码的时候将自动按照-github-workflows-deploy-yml下的配置文件构造部署环境，相当于帮我们执行了-hexo-generate-和-hexo-deploy-然后hexo-deploy会根据项目根目录下的-config-yml配置文件。把编译好的静态文件更新到以自己用户名开头的username-github-io仓库的-master-分支上，这样就完成了自动化部署啦。" class="headerlink" title="触发条件为每当有push 代码的时候将自动按照.github/workflows/deploy.yml下的配置文件构造部署环境，相当于帮我们执行了 hexo generate 和 hexo deploy 然后hexo deploy会根据项目根目录下的_config.yml配置文件。把编译好的静态文件更新到以自己用户名开头的username.github.io仓库的 master 分支上，这样就完成了自动化部署啦。"></a>触发条件为每当有<code>push</code> 代码的时候将自动按照.<code>github/workflows/deploy.yml</code>下的配置文件构造部署环境，相当于帮我们执行了 <code>hexo generate</code> 和<code> hexo deploy</code> 然后<code>hexo deploy</code>会根据项目根目录下的<code>_config.yml</code>配置文件。把编译好的静态文件更新到以自己用户名开头的<code>username.github.io</code>仓库的 <code>master</code> 分支上，这样就完成了自动化部署啦。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  # repo: git@github.com:chuchu-z/chuchu-z.github.io.git #构建机器上没有配置 ssh 免密,所以使用https</span><br><span class="line">  repo: https://github_token@github.com/chuchu-z/chuchu-z.github.io.git</span><br><span class="line">  branch: master</span><br><span class="line">  message: GitHub Actions 自动部署:&#123;&#123; now(&#x27;YYYY-MM-DD HH:mm:ss&#x27;) &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>👉 博客地址: <a target="_blank" rel="noopener" href="http://chuchu-z.com/">http://chuchu-z.com</a></p>
+<p>👉 GitHub地址: <a target="_blank" rel="noopener" href="https://github.com/chuchu-z/chuchu-z.github.io">https://github.com/chuchu-z/chuchu-z.github.io</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qxz5637.github.io/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" data-id="clw98lann0002lvp8hhhu6ncc" data-title="Hexo-Blog Docker搭建本地环境与持续集成" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker利用busybox创建基础镜像
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/05/09/Dockerfile%E5%AD%A6%E4%B9%A0And%E6%9E%84%E5%BB%BAHexo%E9%95%9C%E5%83%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Dockerfile学习And构建Hexo镜像</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">Docker利用busybox创建基础镜像</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">Hexo-Blog Docker搭建本地环境与持续集成</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/09/Dockerfile%E5%AD%A6%E4%B9%A0And%E6%9E%84%E5%BB%BAHexo%E9%95%9C%E5%83%8F/">Dockerfile学习And构建Hexo镜像</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/">修改容器后重新打包镜像并上传至镜像仓库</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/">Alpine容器优化</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 文心小屋<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

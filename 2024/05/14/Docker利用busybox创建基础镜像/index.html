@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Docker利用busybox创建基础镜像 | 文心小屋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="今天小编就为大家分享一篇关于Docker利用busybox创建基础镜像(base image)，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧docker镜像的首行从FROM alpine之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个busybox创建一个基础镜像，相信在此过程中会对docker一些相关的概念有进一步的理解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker利用busybox创建基础镜像">
+<meta property="og:url" content="https://qxz5637.github.io/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="文心小屋">
+<meta property="og:description" content="今天小编就为大家分享一篇关于Docker利用busybox创建基础镜像(base image)，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧docker镜像的首行从FROM alpine之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个busybox创建一个基础镜像，相信在此过程中会对docker一些相关的概念有进一步的理解。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-14T13:35:26.000Z">
+<meta property="article:modified_time" content="2024-05-14T14:25:43.662Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">文心小屋</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">网络文摘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Docker利用busybox创建基础镜像" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/" class="article-date">
+  <time class="dt-published" datetime="2024-05-14T13:35:26.000Z" itemprop="datePublished">2024-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Docker利用busybox创建基础镜像
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="今天小编就为大家分享一篇关于Docker利用busybox创建基础镜像-base-image-，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧"><a href="#今天小编就为大家分享一篇关于Docker利用busybox创建基础镜像-base-image-，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧" class="headerlink" title="今天小编就为大家分享一篇关于Docker利用busybox创建基础镜像(base image)，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧"></a>今天小编就为大家分享一篇关于<code>Docker</code>利用<code>busybox</code>创建基础镜像(<code>base image</code>)，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧</h5><h5 id="docker镜像的首行从FROM-alpine之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个busybox创建一个基础镜像，相信在此过程中会对docker一些相关的概念有进一步的理解。"><a href="#docker镜像的首行从FROM-alpine之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个busybox创建一个基础镜像，相信在此过程中会对docker一些相关的概念有进一步的理解。" class="headerlink" title="docker镜像的首行从FROM alpine之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个busybox创建一个基础镜像，相信在此过程中会对docker一些相关的概念有进一步的理解。"></a><code>docker</code>镜像的首行从<code>FROM alpine</code>之类的镜像开始，但是最初的基础镜像是如何创建的，本文使用一个<code>busybox</code>创建一个基础镜像，相信在此过程中会对<code>docker</code>一些相关的概念有进一步的理解。</h5><span id="more"></span>
+<h4 id="什么是基础镜像（base-image）"><a href="#什么是基础镜像（base-image）" class="headerlink" title="什么是基础镜像（base image）"></a>什么是基础镜像（<code>base image</code>）</h4><h5 id="简单来说，基础镜像就是没有From或者FROM-scratch开头的Dockerfile所构建出来的镜像。比如alpine，这个很小的linux镜像目前只有4M左右"><a href="#简单来说，基础镜像就是没有From或者FROM-scratch开头的Dockerfile所构建出来的镜像。比如alpine，这个很小的linux镜像目前只有4M左右" class="headerlink" title="简单来说，基础镜像就是没有From或者FROM scratch开头的Dockerfile所构建出来的镜像。比如alpine，这个很小的linux镜像目前只有4M左右"></a>简单来说，基础镜像就是没有From或者<code>FROM scratch</code>开头的<code>Dockerfile</code>所构建出来的镜像。比如<code>alpine</code>，这个很小的<code>linux</code>镜像目前只有4M左右</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@kong ~]# docker images |grep alpine</span><br><span class="line">docker.io/alpine latest 3fd9065eaf02 4 months ago 4.15 MB</span><br><span class="line">[root@kong ~]#</span><br></pre></td></tr></table></figure>
+<h5 id="它的Dockerfile很简单，只有三行，这就是一个基础镜像"><a href="#它的Dockerfile很简单，只有三行，这就是一个基础镜像" class="headerlink" title="它的Dockerfile很简单，只有三行，这就是一个基础镜像,"></a>它的Dockerfile很简单，只有三行，这就是一个基础镜像,</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ADD rootfs.tar.xz /</span><br><span class="line">CMD [“/bin/sh”]</span><br></pre></td></tr></table></figure>
+<h5 id="在接下来的文章中我们将会像alpine那样来创建一个自己的基础镜像。"><a href="#在接下来的文章中我们将会像alpine那样来创建一个自己的基础镜像。" class="headerlink" title="在接下来的文章中我们将会像alpine那样来创建一个自己的基础镜像。"></a>在接下来的文章中我们将会像<code>alpine</code>那样来创建一个自己的基础镜像。</h5><h4 id="busybox"><a href="#busybox" class="headerlink" title="busybox"></a><code>busybox</code></h4><h5 id="概要说明"><a href="#概要说明" class="headerlink" title="概要说明"></a>概要说明</h5><h5 id="busybox被称为嵌入式linux的瑞士军刀，这句话是在busybox自己介绍自己的时候提出的-The-Swiss-Army-Knife-of-Embedded-Linux-。busybox整合了很多小的Unix下的通用功能到一个小的可执行文件之中，简单来说在unix或者linux下常用的那些功能在这里你都能找到，但是为了busybox的目标：嵌入式的linux，大小对于busybox来说是非常重要的优化要素和限制，这些功能有可能会有所阉割，但是对于一般需求来说已经足够。而alpine就是在busybox基础上增加了自己的包管理工具apk等功能创建了风靡一时的小巧镜像。busybox是用C语言开发的基于GPL的开源项目，目前的稳定版本为1-28-4。"><a href="#busybox被称为嵌入式linux的瑞士军刀，这句话是在busybox自己介绍自己的时候提出的-The-Swiss-Army-Knife-of-Embedded-Linux-。busybox整合了很多小的Unix下的通用功能到一个小的可执行文件之中，简单来说在unix或者linux下常用的那些功能在这里你都能找到，但是为了busybox的目标：嵌入式的linux，大小对于busybox来说是非常重要的优化要素和限制，这些功能有可能会有所阉割，但是对于一般需求来说已经足够。而alpine就是在busybox基础上增加了自己的包管理工具apk等功能创建了风靡一时的小巧镜像。busybox是用C语言开发的基于GPL的开源项目，目前的稳定版本为1-28-4。" class="headerlink" title="busybox被称为嵌入式linux的瑞士军刀，这句话是在busybox自己介绍自己的时候提出的(The Swiss Army Knife of Embedded Linux)。busybox整合了很多小的Unix下的通用功能到一个小的可执行文件之中，简单来说在unix或者linux下常用的那些功能在这里你都能找到，但是为了busybox的目标：嵌入式的linux，大小对于busybox来说是非常重要的优化要素和限制，这些功能有可能会有所阉割，但是对于一般需求来说已经足够。而alpine就是在busybox基础上增加了自己的包管理工具apk等功能创建了风靡一时的小巧镜像。busybox是用C语言开发的基于GPL的开源项目，目前的稳定版本为1.28.4。"></a><code>busybox</code>被称为嵌入式linux的瑞士军刀，这句话是在<code>busybox</code>自己介绍自己的时候提出的(<code>The Swiss Army Knife of Embedded Linux</code>)。<code>busybox</code>整合了很多小的<code>Unix</code>下的通用功能到一个小的可执行文件之中，简单来说在<code>unix</code>或者<code>linux</code>下常用的那些功能在这里你都能找到，但是为了<code>busybox</code>的目标：嵌入式的<code>linux</code>，大小对于<code>busybox</code>来说是非常重要的优化要素和限制，这些功能有可能会有所阉割，但是对于一般需求来说已经足够。而<code>alpine</code>就是在<code>busybox</code>基础上增加了自己的包管理工具<code>apk</code>等功能创建了风靡一时的小巧镜像。<code>busybox</code>是用<code>C</code>语言开发的基于<code>GPL</code>的开源项目，目前的稳定版本为<code>1.28.4</code>。</h5><h5 id="宿主机器"><a href="#宿主机器" class="headerlink" title="宿主机器"></a>宿主机器</h5><h5 id="下载busybox"><a href="#下载busybox" class="headerlink" title="下载busybox"></a>下载busybox</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@kong ~]# uname -a</span><br><span class="line">Linux kong 3.10.0-693.el7.x86_64 #1 SMP Tue Aug 22 21:09:27 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br><span class="line">[root@kong ~]# cat /etc/RedHat-release</span><br><span class="line">Centos Linux release 7.4.1708 (Core)</span><br><span class="line">[root@kong ~]#</span><br></pre></td></tr></table></figure>
+<h5 id="简单可以直接使用的二进制最新的版本为1-28-1"><a href="#简单可以直接使用的二进制最新的版本为1-28-1" class="headerlink" title="简单可以直接使用的二进制最新的版本为1.28.1"></a>简单可以直接使用的二进制最新的版本为<code>1.28.1</code></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@kong ~]# wget https://busybox.net/downloads/binaries/1.28.1-defconfig-multiarch/busybox-x86_64</span><br><span class="line">–2018-05-25 04:51:20– https://busybox.net/downloads/binaries/1.28.1-defconfig-multiarch/busybox-x86_64</span><br><span class="line">Resolving busybox.net (busybox.net)… 140.211.167.122</span><br><span class="line">Connecting to busybox.net (busybox.net)|140.211.167.122|:443… connected.</span><br><span class="line">HTTP request sent, awaiting response… 200 OK</span><br><span class="line">Length: 1001112 (978K)</span><br><span class="line">Saving to: ‘busybox-x86_64’</span><br><span class="line">100%[==============================================================================================&gt;] 1,001,112 19.3KB/s in 30s</span><br><span class="line">2018-05-25 04:51:57 (32.4 KB/s) – ‘busybox-x86_64’ saved [1001112/1001112]</span><br><span class="line">[root@kong ~]#</span><br><span class="line">设定busybox</span><br><span class="line"></span><br><span class="line">[root@kong ~]# cp busybox-x86_64 /usr/local/bin/busybox</span><br><span class="line">[root@kong ~]# chmod +x /usr/local/bin/busybox</span><br><span class="line">[root@kong ~]# which busybox</span><br><span class="line">/usr/local/bin/busybox</span><br><span class="line">[root@kong ~]#</span><br></pre></td></tr></table></figure>
+<h5 id="版本确认"><a href="#版本确认" class="headerlink" title="版本确认"></a>版本确认</h5><h5 id="输入busybox可以看出版本以及熟悉的linux下的工具，仔细看一遍就会理解busybox号称自己是瑞士军刀一点都不夸张，反过来说，瑞士军刀如果敢号称linux里的busybox可能会引起非议。"><a href="#输入busybox可以看出版本以及熟悉的linux下的工具，仔细看一遍就会理解busybox号称自己是瑞士军刀一点都不夸张，反过来说，瑞士军刀如果敢号称linux里的busybox可能会引起非议。" class="headerlink" title="输入busybox可以看出版本以及熟悉的linux下的工具，仔细看一遍就会理解busybox号称自己是瑞士军刀一点都不夸张，反过来说，瑞士军刀如果敢号称linux里的busybox可能会引起非议。"></a>输入<code>busybox</code>可以看出版本以及熟悉的<code>linux</code>下的工具，仔细看一遍就会理解<code>busybox</code>号称自己是瑞士军刀一点都不夸张，反过来说，瑞士军刀如果敢号称<code>linux</code>里的<code>busybox</code>可能会引起非议。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[root@kong ~]# busybox</span><br><span class="line">BusyBox v1.28.1 (2018-02-15 14:34:02 CET) multi-call binary.</span><br><span class="line">BusyBox is copyrighted by many authors between 1998-2015.</span><br><span class="line">Licensed under GPLv2. See source distribution for detailed</span><br><span class="line">copyright notices.</span><br><span class="line">Usage: busybox [function [arguments]…]</span><br><span class="line">     or: busybox –list[-full]</span><br><span class="line">     or: busybox –install [-s] [DIR]</span><br><span class="line">     or: function [arguments]…</span><br><span class="line">     BusyBox is a multi-call binary that combines many common Unix</span><br><span class="line">     utilities into a single executable. Most people will create a</span><br><span class="line">     link to busybox for each function they wish to use and BusyBox</span><br><span class="line">     will act like whatever it was invoked as.</span><br><span class="line">Currently defined functions:</span><br><span class="line">     [, [[, acpid, add-shell, addgroup, adduser, adjtimex, arch, arp, arping, ash, awk, base64, basename, beep, blkdiscard, blkid,</span><br><span class="line">     blockdev, bootchartd, brctl, bunzip2, bzcat, bzip2, cal, cat, chat, chattr, chgrp, chmod, chown, chpasswd, chpst, chroot, chrt,</span><br><span class="line">     chvt, cksum, clear, cmp, comm, conspy, cp, cpio, crond, crontab, cryptpw, cttyhack, cut, date, dc, dd, deallocvt, delgroup,</span><br><span class="line">     deluser, depmod, devmem, df, dhcprelay, diff, dirname, dmesg, dnsd, dnsdomainname, DOS2unix, dpkg, dpkg-deb, du, dumpkmap,</span><br><span class="line">     dumpleases, echo, ed, egrep, eject, env, envdir, envuidgid, ether-wake, expand, expr, factor, fakeidentd, fallocate, false,</span><br><span class="line">     fatattr, fbset, fbsplash, fdflush, fdformat, fdisk, fgconsole, fgrep, find, findfs, flock, fold, free, freeramdisk, fsck,</span><br><span class="line">     fsck.minix, fsfreeze, fstrim, fsync, ftpd, ftpget, ftpput, fuser, getopt, getty, grep, groups, gunzip, gzip, halt, hd, hdparm,</span><br><span class="line">     head, hexdump, hexedit, hostid, hostname, httpd, hush, hwclock, i2cdetect, i2cdump, i2cget, i2cset, id, ifconfig, ifdown,</span><br><span class="line">     ifenslave, ifplugd, ifup, inetd, init, insmod, install, ionice, IOStat, ip, ipaddr, ipcalc, ipcrm, ipcs, iplink, ipneigh,</span><br><span class="line">     iproute, iprule, iptunnel, kbd_mode, kill, killall, killall5, klogd, last, less, link, linux32, linux64, linuxrc, ln, loadfont,</span><br><span class="line">     loadkmap, logger, login, logname, logread, losetup, lpd, lpq, lpr, ls, lsattr, lsmod, lsof, lspci, lsscsi, lsusb, lzcat, lzma,</span><br><span class="line">     lzop, makedevs, makemime, man, md5sum, mdev, mesg, microcom, mkdir, mkdosfs, mke2fs, mkfifo, mkfs.ext2, mkfs.minix, mkfs.vfat,</span><br><span class="line">     mknod, mkpasswd, mkswap, mktemp, modinfo, modprobe, more, mount, mountpoint, mpstat, mt, mv, nameif, nanddump, nandwrite,</span><br><span class="line">     nbd-client, nc, netstat, nice, nl, nmeter, nohup, nproc, nsenter, nslookup, ntpd, nuke, od, openvt, partprobe, passwd, paste,</span><br><span class="line">     patch, pgrep, pidof, ping, ping6, pipe_progress, pivot_root, pkill, pmap, popmaildir, poweroff, powertop, printenv, printf, ps,</span><br><span class="line">     pscan, pstree, pwd, pwdx, raidautorun, rdate, rdev, readahead, readlink, readprofile, realpath, reboot, reformime,</span><br><span class="line">     remove-shell, renice, reset, resize, resume, rev, rm, rmdir, rmmod, route, rpm, rpm2cpio, rtcwake, run-init, run-parts,</span><br><span class="line">     runlevel, runsv, runsvdir, rx, script, scriptreplay, sed, sendmail, seq, setarch, setconsole, setfattr, setfont, setkeycodes,</span><br><span class="line">     setlogcons, setpriv, setserial, setsid, setuidgid, sh, sha1sum, sha256sum, sha3sum, sha512sum, showkey, shred, shuf, slattach,</span><br><span class="line">     sleep, smemcap, softlimit, sort, split, ssl_client, start-stop-daemon, stat, strings, stty, su, sulogin, sum, sv, svc, svlogd,</span><br><span class="line">     swapoff, swapon, switch_root, sync, sysctl, syslogd, tac, tail, tar, taskset, tcpsvd, tee, telnet, telnetd, test, tftp, tftpd,</span><br><span class="line">     time, timeout, top, touch, tr, traceroute, traceroute6, true, truncate, tty, ttysize, tunctl, ubiattach, ubidetach, ubimkvol,</span><br><span class="line">     ubirename, ubirmvol, ubirsvol, ubiupdatevol, udhcpc, udhcpd, udpsvd, uevent, umount, uname, unexpand, uniq, unix2dos, unlink,</span><br><span class="line">     unlzma, unshare, unxz, unzip, uptime, users, usleep, uudecode, uuencode, vconfig, vi, vlock, volname, w, wall, watch, watchdog,</span><br><span class="line">     wc, wget, which, who, whoami, whois, xargs, xxd, xz, xzcat, yes, zcat, zcip</span><br><span class="line">[root@kong ~]</span><br></pre></td></tr></table></figure>
+<h5 id="创建rootfs"><a href="#创建rootfs" class="headerlink" title="创建rootfs"></a>创建<code>rootfs</code></h5><h5 id="这张图在镜像基础介绍的时候已经被无数次看到了，rootfs是linux中重要的概念，而alpine中也有ADD-rootfs-tar-xz这样一句，接下来我们将了解一下如何生成一个简单的rootfs"><a href="#这张图在镜像基础介绍的时候已经被无数次看到了，rootfs是linux中重要的概念，而alpine中也有ADD-rootfs-tar-xz这样一句，接下来我们将了解一下如何生成一个简单的rootfs" class="headerlink" title="这张图在镜像基础介绍的时候已经被无数次看到了，rootfs是linux中重要的概念，而alpine中也有ADD rootfs.tar.xz这样一句，接下来我们将了解一下如何生成一个简单的rootfs"></a>这张图在镜像基础介绍的时候已经被无数次看到了，<code>rootfs</code>是<code>linux</code>中重要的概念，而<code>alpine</code>中也有<code>ADD rootfs.tar.xz</code>这样一句，接下来我们将了解一下如何生成一个简单的<code>rootfs</code></h5><h5 id="创建目录并进入"><a href="#创建目录并进入" class="headerlink" title="创建目录并进入"></a>创建目录并进入</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@kong ~]# mkdir rootfs</span><br><span class="line">[root@kong ~]# cd rootfs/</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="创建rootfs-1"><a href="#创建rootfs-1" class="headerlink" title="创建rootfs"></a>创建<code>rootfs</code></h5><h5 id="执行如下语句"><a href="#执行如下语句" class="headerlink" title="执行如下语句"></a>执行如下语句</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for module in `busybox –list-modules`</span><br><span class="line">do</span><br><span class="line">     mkdir -p `dirname “$module”`</span><br><span class="line">     ln -sf /bin/busybox “$module”</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h5 id="执行日志"><a href="#执行日志" class="headerlink" title="执行日志"></a>执行日志</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# for module in `busybox –list-modules`</span><br><span class="line">&gt; do</span><br><span class="line">&gt; mkdir -p `dirname “$module”`</span><br><span class="line">&gt; ln -sf /bin/busybox “$module”</span><br><span class="line">&gt; done</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# ls</span><br><span class="line">bin linuxrc sbin usr</span><br><span class="line">[root@kong rootfs]# find . -type d</span><br><span class="line">.</span><br><span class="line">./usr</span><br><span class="line">./usr/bin</span><br><span class="line">./usr/sbin</span><br><span class="line">./sbin</span><br><span class="line">./bin</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="将busybox拷贝至新创建的-bin目录下"><a href="#将busybox拷贝至新创建的-bin目录下" class="headerlink" title="将busybox拷贝至新创建的./bin目录下"></a>将<code>busybox</code>拷贝至新创建的<code>./bin</code>目录下</h5><h5 id="这样，上述命令的链接对象就存在了"><a href="#这样，上述命令的链接对象就存在了" class="headerlink" title="这样，上述命令的链接对象就存在了"></a>这样，上述命令的链接对象就存在了</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# cp /usr/local/bin/busybox bin/</span><br><span class="line">[root@kong rootfs]# ls -l bin/busybox</span><br><span class="line">-rwxr-xr-x. 1 root root 1001112 May 25 05:27 bin/busybox</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="创建rootfs-tar"><a href="#创建rootfs-tar" class="headerlink" title="创建rootfs.tar"></a>创建<code>rootfs.tar</code></h5><h5 id="此处注意相对路径，而后续次相对路径会展开至-下，从而创建新的系统的rootfs，这也是从零搭建linux-linux-from-scratch-的重要操作之一。"><a href="#此处注意相对路径，而后续次相对路径会展开至-下，从而创建新的系统的rootfs，这也是从零搭建linux-linux-from-scratch-的重要操作之一。" class="headerlink" title="此处注意相对路径，而后续次相对路径会展开至/下，从而创建新的系统的rootfs，这也是从零搭建linux(linux from scratch)的重要操作之一。"></a>此处注意相对路径，而后续次相对路径会展开至<code>/</code>下，从而创建新的系统的<code>rootfs</code>，这也是从零搭建<code>linux</code>(<code>linux from scratch</code>)的重要操作之一。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# tar cpf rootfs.tar .</span><br><span class="line">tar: ./rootfs.tar: file is the archive; not dumped</span><br><span class="line">[root@kong rootfs]#</span><br><span class="line">简单说明：busybox –list-modules列出了busybox的所有模块，然后以此为基础，创建了一个小型的rootfs</span><br><span class="line">[root@kong rootfs]# busybox –list-modules |wc -l</span><br><span class="line">389</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="准备Dockerfile"><a href="#准备Dockerfile" class="headerlink" title="准备Dockerfile"></a>准备<code>Dockerfile</code></h5><h5 id="准备一个一行的Dockerfile"><a href="#准备一个一行的Dockerfile" class="headerlink" title="准备一个一行的Dockerfile"></a>准备一个一行的<code>Dockerfile</code></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# vi Dockerfile</span><br><span class="line">[root@kong rootfs]# cat Dockerfile</span><br><span class="line">From scratch</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="创建base镜像，由于没有发现具体的内容，所以未创建出具体镜像。另外，本文为了演示方便，直接在此处创建Dockerfile，这并不是一个好主意，实际的时候请不要这样做，如果当前目录下有100G的文件，就会无比缓慢，而且也不规范，无关物品需要清场。"><a href="#创建base镜像，由于没有发现具体的内容，所以未创建出具体镜像。另外，本文为了演示方便，直接在此处创建Dockerfile，这并不是一个好主意，实际的时候请不要这样做，如果当前目录下有100G的文件，就会无比缓慢，而且也不规范，无关物品需要清场。" class="headerlink" title="创建base镜像，由于没有发现具体的内容，所以未创建出具体镜像。另外，本文为了演示方便，直接在此处创建Dockerfile，这并不是一个好主意，实际的时候请不要这样做，如果当前目录下有100G的文件，就会无比缓慢，而且也不规范，无关物品需要清场。"></a>创建<code>base</code>镜像，由于没有发现具体的内容，所以未创建出具体镜像。另外，本文为了演示方便，直接在此处创建<code>Dockerfile</code>，这并不是一个好主意，实际的时候请不要这样做，如果当前目录下有100G的文件，就会无比缓慢，而且也不规范，无关物品需要清场。</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# docker build -t busyboxbase:latest .</span><br><span class="line">Sending build context to Docker daemon 2.415 MB</span><br><span class="line">Step 1/1 : FROM scratch</span><br><span class="line">     —&gt;</span><br><span class="line">No image was generated. Is your Dockerfile empty?</span><br><span class="line">[root@kong rootfs]# docker images |grep busyboxbase</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="from-scracth"><a href="#from-scracth" class="headerlink" title="from scracth"></a><code>from scracth</code></h5><h5 id="有From，这个scratch可以pull么，目前的版本已经将其作为一个保留名称"><a href="#有From，这个scratch可以pull么，目前的版本已经将其作为一个保留名称" class="headerlink" title="有From，这个scratch可以pull么，目前的版本已经将其作为一个保留名称"></a>有<code>From</code>，这个<code>scratch</code>可以<code>pull</code>么，目前的版本已经将其作为一个保留名称</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# docker search scratch |grep ‘an explicitly empty’</span><br><span class="line">docker.io docker.io/scratch an explicitly empty image, especially for … 407 [OK]</span><br><span class="line">[root@kong rootfs]# docker pull scratch</span><br><span class="line">Using default tag: latest</span><br><span class="line">Error response from daemon: ‘scratch’ is a reserved name</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="将此Dockerfile添加一行没有实际作用的，看看scratch到底是什么"><a href="#将此Dockerfile添加一行没有实际作用的，看看scratch到底是什么" class="headerlink" title="将此Dockerfile添加一行没有实际作用的，看看scratch到底是什么"></a>将此<code>Dockerfile</code>添加一行没有实际作用的，看看<code>scratch</code>到底是什么</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# vi Dockerfile</span><br><span class="line">[root@kong rootfs]# cat Dockerfile</span><br><span class="line">From scratch</span><br><span class="line">MAINTAINER LiuMiao &lt;liumiaocn@outlook.com&gt;</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="进行构建，发现产生了一个0字节的镜像文件，也与scratch的原意相通"><a href="#进行构建，发现产生了一个0字节的镜像文件，也与scratch的原意相通" class="headerlink" title="进行构建，发现产生了一个0字节的镜像文件，也与scratch的原意相通"></a>进行构建，发现产生了一个<code>0</code>字节的镜像文件，也与<code>scratch</code>的原意相通</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# docker build -t busyboxbase:latest .</span><br><span class="line">Sending build context to Docker daemon 2.415 MB</span><br><span class="line">Step 1/2 : FROM scratch</span><br><span class="line">     —&gt;</span><br><span class="line">Step 2/2 : MAINTAINER LiuMiao &lt;liumiaocn@outlook.com&gt;</span><br><span class="line">     —&gt; Running in b118fd7c73a7</span><br><span class="line">     —&gt; 2074dc76c09e</span><br><span class="line">Removing intermediate container b118fd7c73a7</span><br><span class="line">Successfully built 2074dc76c09e</span><br><span class="line">[root@kong rootfs]# docker images |grep busyboxbase</span><br><span class="line">busyboxbase latest 2074dc76c09e 14 seconds ago 0 B</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="至此，我们理解了from-scratch确实不会有额外的添加，接下来我们像alpine那样添加如下两句"><a href="#至此，我们理解了from-scratch确实不会有额外的添加，接下来我们像alpine那样添加如下两句" class="headerlink" title="至此，我们理解了from scratch确实不会有额外的添加，接下来我们像alpine那样添加如下两句"></a>至此，我们理解了<code>from scratch</code>确实不会有额外的添加，接下来我们像<code>alpine</code>那样添加如下两句</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ADD rootfs.tar /</span><br><span class="line">CMD [“/bin/sh”]</span><br></pre></td></tr></table></figure>
+<h5 id="我们的Dockerfile也是几乎一样的三行"><a href="#我们的Dockerfile也是几乎一样的三行" class="headerlink" title="我们的Dockerfile也是几乎一样的三行"></a>我们的<code>Dockerfile</code>也是几乎一样的三行</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# cat Dockerfile</span><br><span class="line">From scratch</span><br><span class="line">ADD rootfs.tar /</span><br><span class="line">CMD [“/bin/sh”]</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="这样就创建了一个1M的busybox为基础的镜像"><a href="#这样就创建了一个1M的busybox为基础的镜像" class="headerlink" title="这样就创建了一个1M的busybox为基础的镜像"></a>这样就创建了一个<code>1M</code>的<code>busybox</code>为基础的镜像</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# docker build -t busyboxbase:latest .</span><br><span class="line">Sending build context to Docker daemon 2.415 MB</span><br><span class="line">Step 1/3 : FROM scratch</span><br><span class="line">     —&gt;</span><br><span class="line">Step 2/3 : ADD rootfs.tar /</span><br><span class="line">     —&gt; 0fbb0c8c7579</span><br><span class="line">Removing intermediate container 8311e96f456c</span><br><span class="line">Step 3/3 : CMD /bin/sh</span><br><span class="line">     —&gt; Running in efb85c4526bf</span><br><span class="line">     —&gt; 02270c80a4e4</span><br><span class="line">Removing intermediate container efb85c4526bf</span><br><span class="line">Successfully built 02270c80a4e4</span><br><span class="line">[root@kong rootfs]# docker images |grep busyboxbase</span><br><span class="line">busyboxbase latest 02270c80a4e4 9 seconds ago 1.01 MB</span><br><span class="line">[root@kong rootfs]#</span><br></pre></td></tr></table></figure>
+<h5 id="运行并使用"><a href="#运行并使用" class="headerlink" title="运行并使用"></a>运行并使用</h5><h5 id="使用docker-run发现此镜像所启动的容器并无异常之处"><a href="#使用docker-run发现此镜像所启动的容器并无异常之处" class="headerlink" title="使用docker run发现此镜像所启动的容器并无异常之处"></a>使用<code>docker run</code>发现此镜像所启动的容器并无异常之处</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@kong rootfs]# docker run –rm -it busyboxbase sh</span><br><span class="line">/ # hostname</span><br><span class="line">b7f9e9646746</span><br><span class="line">/ # uname -a</span><br><span class="line">Linux b7f9e9646746 3.10.0-693.el7.x86_64 #1 SMP Tue Aug 22 21:09:27 UTC 2017 x86_64 GNU/Linux</span><br><span class="line">/ #</span><br></pre></td></tr></table></figure>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><h5 id="这篇文章介绍了如何使用busybox结合from-scratch机制创建docker的基础镜像以及相关原理。本文利用busybox-1-28-1版本创建了一个1-01M的可用的基础镜像，从瑞士军刀到瑞士指甲刀，你可以继续优化到若干K都是可行的，但是到了10M以下其实应该更多考虑的是后续的扩展性和功能性的因素了。但是从另外的角度考虑，集成进来了那么多功能的同时，也将这些功能的不安定因素也集成进来了。利用from-scratch机制，创建小并且依赖性少的上下文环境是非常有用的。"><a href="#这篇文章介绍了如何使用busybox结合from-scratch机制创建docker的基础镜像以及相关原理。本文利用busybox-1-28-1版本创建了一个1-01M的可用的基础镜像，从瑞士军刀到瑞士指甲刀，你可以继续优化到若干K都是可行的，但是到了10M以下其实应该更多考虑的是后续的扩展性和功能性的因素了。但是从另外的角度考虑，集成进来了那么多功能的同时，也将这些功能的不安定因素也集成进来了。利用from-scratch机制，创建小并且依赖性少的上下文环境是非常有用的。" class="headerlink" title="这篇文章介绍了如何使用busybox结合from scratch机制创建docker的基础镜像以及相关原理。本文利用busybox 1.28.1版本创建了一个1.01M的可用的基础镜像，从瑞士军刀到瑞士指甲刀，你可以继续优化到若干K都是可行的，但是到了10M以下其实应该更多考虑的是后续的扩展性和功能性的因素了。但是从另外的角度考虑，集成进来了那么多功能的同时，也将这些功能的不安定因素也集成进来了。利用from scratch机制，创建小并且依赖性少的上下文环境是非常有用的。"></a>这篇文章介绍了如何使用<code>busybox</code>结合<code>from scratch</code>机制创建<code>docker</code>的基础镜像以及相关原理。本文利用<code>busybox 1.28.1</code>版本创建了一个1.01M的可用的基础镜像，从瑞士军刀到瑞士指甲刀，你可以继续优化到若干K都是可行的，但是到了10M以下其实应该更多考虑的是后续的扩展性和功能性的因素了。但是从另外的角度考虑，集成进来了那么多功能的同时，也将这些功能的不安定因素也集成进来了。利用<code>from scratch</code>机制，创建小并且依赖性少的上下文环境是非常有用的。</h5><h5 id="希望本文的内容对大家的学习或者工作具有一定的参考学习价值，谢谢大家对我们的支持"><a href="#希望本文的内容对大家的学习或者工作具有一定的参考学习价值，谢谢大家对我们的支持" class="headerlink" title="希望本文的内容对大家的学习或者工作具有一定的参考学习价值，谢谢大家对我们的支持"></a>希望本文的内容对大家的学习或者工作具有一定的参考学习价值，谢谢大家对我们的支持</h5>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qxz5637.github.io/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/" data-id="clw98lanl0001lvp821q87853" data-title="Docker利用busybox创建基础镜像" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo-Blog Docker搭建本地环境与持续集成</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/05/14/Docker%E5%88%A9%E7%94%A8busybox%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">Docker利用busybox创建基础镜像</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/Hexo-Blog-Docker%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">Hexo-Blog Docker搭建本地环境与持续集成</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/09/Dockerfile%E5%AD%A6%E4%B9%A0And%E6%9E%84%E5%BB%BAHexo%E9%95%9C%E5%83%8F/">Dockerfile学习And构建Hexo镜像</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/">修改容器后重新打包镜像并上传至镜像仓库</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/">Alpine容器优化</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 文心小屋<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
