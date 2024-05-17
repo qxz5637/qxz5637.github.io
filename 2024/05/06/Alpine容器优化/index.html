@@ -4,20 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>Alpine容器优化 | 文心小屋</title>
+  <title>Alpine容器优化 | 网络文摘</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个alpine容器通用模板作为记录">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Alpine容器优化">
 <meta property="og:url" content="https://qxz5637.github.io/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/index.html">
-<meta property="og:site_name" content="文心小屋">
+<meta property="og:site_name" content="网络文摘">
 <meta property="og:description" content="摘要：alpine容器一直是使用得比较多的，而且也是官方推荐使用的。但是官方的容器会有一些不方便的地方，比如安装软件, 时区不同等. 所以本文旨在完成一个alpine容器通用模板作为记录">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-06T16:39:21.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-06T08:39:21.000Z">
 <meta property="article:modified_time" content="2024-05-06T16:39:45.095Z">
+<meta property="article:author" content="文心">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="文心小屋" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="网络文摘" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -42,11 +43,11 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">文心小屋</a>
+        <a href="/" id="logo">网络文摘</a>
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">网络文摘</a>
+          <a href="/" id="subtitle">来自网络的学习与收集，记录学习点滴</a>
         </h2>
       
     </div>
@@ -64,10 +65,10 @@
         
           <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
         
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qxz5637.github.io"></form>
       </div>
     </div>
   </div>
@@ -77,7 +78,7 @@
         <section id="main"><article id="post-Alpine容器优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2024-05-06T16:39:21.000Z" itemprop="datePublished">2024-05-06</time>
+  <time class="dt-published" datetime="2024-05-06T08:39:21.000Z" itemprop="datePublished">2024-05-06</time>
 </a>
     
   </div>
@@ -109,7 +110,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qxz5637.github.io/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" data-id="clvv59qqb00020hp84x404ztw" data-title="Alpine容器优化" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://qxz5637.github.io/2024/05/06/Alpine%E5%AE%B9%E5%99%A8%E4%BC%98%E5%8C%96/" data-id="clwaqpcsd000119p8d1hd5i2h" data-title="Alpine容器优化" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
       
       
       
@@ -120,7 +121,7 @@
 <nav id="article-nav">
   
     <a href="/2024/05/06/%E4%BF%AE%E6%94%B9%E5%AE%B9%E5%99%A8%E5%90%8E%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           修改容器后重新打包镜像并上传至镜像仓库
@@ -130,7 +131,7 @@
   
   
     <a href="/2024/05/04/Git%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%A7%84%E8%8C%83/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">Git工作流规范</div>
     </a>
   
@@ -154,9 +155,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li></ul>
     </div>
   </div>
 
@@ -164,7 +165,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -201,7 +202,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2024 文心小屋<br>
+      &copy; 2024 文心<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
